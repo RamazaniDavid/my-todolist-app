@@ -1,14 +1,35 @@
-import React from 'react';
-import './TodoListItem.css';
+import React from "react";
+import "./TodoListItem.css";
+import { connect } from "react-redux";
+import { completeTodo, removeTodo } from "./actions";
 
-const TodoListItem = ({ todo }) => (
-    <div className="todo-item-container">
-        <h3>{todo.text}</h3>
-        <div className="buttons-container">
-            <button className="completed-button">Mark As Completed</button>
-            <button className="remove-button">Remove</button>
-        </div>
+const TodoListItem = ({ todo, removeTodo, completeTodo }) => (
+  <div className="todo-item-container">
+    <h3>{todo.title}</h3>
+    <div className="buttons-container">
+      {!todo.completed && (
+        <button
+          className="completed-button"
+          onClick={() => completeTodo(todo.id)}
+        >
+          Mark As Completed
+        </button>
+      )}
+      <button
+        className="remove-button"
+        onClick={() => {
+          removeTodo(todo.id);
+        }}
+      >
+        Remove
+      </button>
     </div>
+  </div>
 );
 
-export default TodoListItem;
+const mapDispatchToProps = (dispatch) => ({
+  removeTodo: (id) => dispatch(removeTodo(id)),
+  completeTodo: (id) => dispatch(completeTodo(id)),
+});
+
+export default connect(null, mapDispatchToProps)(TodoListItem);

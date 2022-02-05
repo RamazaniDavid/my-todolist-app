@@ -1,20 +1,36 @@
-import React, { useState } from 'react';
-import './NewTodoForm.css';
+import React from "react";
+import { connect } from "react-redux";
+import useInput from "../shared/hooks/useInput";
+import { createTodo, removeTodo } from "./actions";
+import "./NewTodoForm.css";
 
-const NewTodoForm = () => {
-    const [inputValue, setInputValue] = useState('');
+const NewTodoForm = ({ createTodo }) => {
+  const [titleProps, resetTitle] = useInput("");
 
-    return (
-        <div className="new-todo-form">
-            <input
-                className="new-todo-input"
-                type="text"
-                placeholder="Type your new todo here"
-                value={inputValue}
-                onChange={e => setInputValue(e.target.value)} />
-            <button className="new-todo-button">Create Todo</button>
-        </div>
-    );
+  return (
+    <div className="new-todo-form">
+      <input
+        {...titleProps}
+        className="new-todo-input"
+        type="text"
+        placeholder="Type your new todo here"
+        name="title"
+      />
+      <button
+        className="new-todo-button"
+        onClick={() => {
+          createTodo(titleProps.value);
+        }}
+      >
+        Create Todo
+      </button>
+    </div>
+  );
 };
 
-export default NewTodoForm;
+const mapDispatchToProps = (dispatch) => ({
+  createTodo: (title) => dispatch(createTodo(title)),
+  removeTodo: (id) => dispatch(removeTodo(id)),
+});
+
+export default connect(null, mapDispatchToProps)(NewTodoForm);

@@ -23,7 +23,7 @@ app.post("/api/v1/todos/create", async (req, res) => {
   withDB(async (db) => {
     const todo = await db.collection("todos").insertOne({
       id: new ObjectId(),
-      content,
+      title,
       createdAt: new Date(),
       updatedAt: new Date(),
       isCompleted: false,
