@@ -1,4 +1,9 @@
-import { CREATE_TODO, REMOVE_TODO, COMPLETE_TODO } from "../actions/todoActions";
+import {
+  CREATE_TODO,
+  REMOVE_TODO,
+  COMPLETE_TODO,
+  NOT_COMPLETE_TODO,
+} from "../actions/todoActions";
 
 export const todos = (state = [], action) => {
   const { type, payload } = action;
@@ -18,6 +23,11 @@ export const todos = (state = [], action) => {
       const { id: idToComplete } = payload;
       return state.map((todo) =>
         todo.id === idToComplete ? { ...todo, completed: true } : todo
+      );
+    case NOT_COMPLETE_TODO:
+      const { id: idToNotComplete } = payload;
+      return state.map((todo) =>
+        todo.id === idToNotComplete ? { ...todo, completed: false } : todo
       );
     default:
       return state;

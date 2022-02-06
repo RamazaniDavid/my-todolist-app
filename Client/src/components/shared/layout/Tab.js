@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const Tab = ({ children, selectedTabIndex }) => {
+const Tab = ({ children, selectedTabIndex = 0 }) => {
   const [activeTab, setActiveTab] = useState(0);
   useEffect(() => {
     setActiveTab(selectedTabIndex);

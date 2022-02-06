@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import NewTodoForm from "./NewTodoForm";
 import TodoListItem from "./TodoListItem";
@@ -6,16 +6,21 @@ import {
   completeTodo,
   createTodo,
   removeTodo,
+  notCompleteTodo,
 } from "../../core/redux/actions/todoActions";
 import Tab from "../shared/layout/Tab";
 
-const TodoList = ({ todos = [], createTodo, completeTodo, removeTodo }) => {
-  const [selectedTabIndex, setSelectedTabIndex] = useState(1);
-
+const TodoList = ({
+  todos = [],
+  createTodo,
+  completeTodo,
+  removeTodo,
+  notCompleteTodo,
+}) => {
   return (
     <div className="list-wrapper">
       <NewTodoForm createTodo={createTodo} />
-      <Tab selectedTabIndex={selectedTabIndex}>
+      <Tab>
         <div label="All Tasks">
           <ul className="list-group mb-0">
             {todos.map((todo) => (
@@ -24,6 +29,7 @@ const TodoList = ({ todos = [], createTodo, completeTodo, removeTodo }) => {
                 todo={todo}
                 completeTodo={completeTodo}
                 removeTodo={removeTodo}
+                notCompleteTodo={notCompleteTodo}
               />
             ))}
           </ul>
@@ -38,6 +44,7 @@ const TodoList = ({ todos = [], createTodo, completeTodo, removeTodo }) => {
                   todo={todo}
                   completeTodo={completeTodo}
                   removeTodo={removeTodo}
+                  notCompleteTodo={notCompleteTodo}
                 />
               ))}
           </ul>
@@ -52,6 +59,7 @@ const TodoList = ({ todos = [], createTodo, completeTodo, removeTodo }) => {
                   todo={todo}
                   completeTodo={completeTodo}
                   removeTodo={removeTodo}
+                  notCompleteTodo={notCompleteTodo}
                 />
               ))}
           </ul>
@@ -68,6 +76,8 @@ const mapDispatchToProps = (dispatch) => ({
   createTodo: (title) => dispatch(createTodo(title)),
   removeTodo: (id) => dispatch(removeTodo(id)),
   completeTodo: (id) => dispatch(completeTodo(id)),
+  notCompleteTodo: (id) => dispatch(notCompleteTodo(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoList);
+export { TodoList };

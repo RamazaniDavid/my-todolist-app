@@ -15,3 +15,9 @@ export const completeTodo = (id) => ({
   type: COMPLETE_TODO,
   payload: { id },
 });
+
+export const NOT_COMPLETE_TODO = "NOT_COMPLETE_TODO";
+export const notCompleteTodo = (id) => ({
+  type: NOT_COMPLETE_TODO,
+  payload: { id },
+});
