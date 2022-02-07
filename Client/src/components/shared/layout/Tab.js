@@ -1,10 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, {  useReducer } from "react";
 
-const Tab = ({ children, selectedTabIndex = 0 }) => {
-  const [activeTab, setActiveTab] = useState(0);
-  useEffect(() => {
-    setActiveTab(selectedTabIndex);
-  }, [selectedTabIndex]);
+const Tab = ({ children, initTabIndex = 0, onSelectedTabChanged }) => {
+  const [activeTab, setActiveTab] = useReducer((oldTab, newTab) => {
+    if (onSelectedTabChanged && typeof onSelectedTabChanged === "function") {
+      onSelectedTabChanged({
+        oldTab,
+        newTab,
+      });
+    }
+    return newTab;
+  }, initTabIndex);
+
   const tabArray = React.Children.toArray(children);
   return (
     <>
@@ -15,9 +21,11 @@ const Tab = ({ children, selectedTabIndex = 0 }) => {
             const { label } = child.props;
 
             return (
-              <li key={ix} className="nav-item" role="presentation">
+              <li key={ix} className="nav-item pointer" role="presentation">
                 <span
-                  className={`nav-link ${activeTab === ix ? "active" : ""}`}
+                  className={`nav-link pointer ${
+                    activeTab === ix ? "active" : ""
+                  }`}
                   id={ix}
                   data-mdb-toggle="tab"
                   role="tab"

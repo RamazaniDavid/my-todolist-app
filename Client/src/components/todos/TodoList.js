@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import NewTodoForm from "./NewTodoForm";
 import TodoListItem from "./TodoListItem";
+import Tab from "../shared/layout/Tab";
 import {
-  completeTodo,
+  loadTodos,
   createTodo,
   removeTodo,
+  completeTodo,
   notCompleteTodo,
-} from "../../core/redux/actions/todoActions";
-import Tab from "../shared/layout/Tab";
+} from "../../core/redux/thunks/todoThunks";
 
 const TodoList = ({
   todos = [],
@@ -16,7 +17,13 @@ const TodoList = ({
   completeTodo,
   removeTodo,
   notCompleteTodo,
+  loadTodos,
 }) => {
+  useEffect(() => {
+    console.log("TodoList.useEffect");
+    loadTodos();
+  }, [loadTodos]);
+
   return (
     <div className="list-wrapper">
       <NewTodoForm createTodo={createTodo} />
@@ -25,7 +32,7 @@ const TodoList = ({
           <ul className="list-group mb-0">
             {todos.map((todo) => (
               <TodoListItem
-                key={todo.id}
+                key={todo._id}
                 todo={todo}
                 completeTodo={completeTodo}
                 removeTodo={removeTodo}
@@ -37,10 +44,10 @@ const TodoList = ({
         <div label="Active">
           <ul className="list-group mb-0">
             {todos
-              .filter((todo) => !todo.completed)
+              .filter((todo) => !todo.isCompleted)
               .map((todo) => (
                 <TodoListItem
-                  key={todo.id}
+                  key={todo._id}
                   todo={todo}
                   completeTodo={completeTodo}
                   removeTodo={removeTodo}
@@ -52,10 +59,10 @@ const TodoList = ({
         <div label="Completed">
           <ul className="list-group mb-0">
             {todos
-              .filter((todo) => todo.completed)
+              .filter((todo) => todo.isCompleted)
               .map((todo) => (
                 <TodoListItem
-                  key={todo.id}
+                  key={todo._id}
                   todo={todo}
                   completeTodo={completeTodo}
                   removeTodo={removeTodo}
@@ -77,6 +84,7 @@ const mapDispatchToProps = (dispatch) => ({
   removeTodo: (id) => dispatch(removeTodo(id)),
   completeTodo: (id) => dispatch(completeTodo(id)),
   notCompleteTodo: (id) => dispatch(notCompleteTodo(id)),
+  loadTodos: () => dispatch(loadTodos()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoList);
